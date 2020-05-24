@@ -10,6 +10,7 @@ import Data.Maybe (Maybe(..), fromMaybe)
 import Data.Traversable (traverse)
 import Prim.RowList as RL
 import Record.CSV.Header (class Header, headerItems)
+import Record.CSV.OrderHelper (pickHeaderOrder, sortColumns)
 import Record.CSV.Parser.ParseAsString (parseAsString)
 import Record.CSV.Parser.ParseValues (class ParseValues, parseValues)
 import Type.Proxy (Proxy(..))
@@ -23,15 +24,14 @@ parseCSV ::
 parseCSV s = do
   -- NOTE: First, parse csv as String
   csv <- lmap show $ parseAsString s
-  -- NOTE: Second, check header
-  let
-    header = headerItems (Proxy :: Proxy { | r })
-  case L.head csv of
-    Just h
-      | h == header -> Right unit
-    Just _ -> Left "Mismatch header."
+  -- NOTE: Second, pick sort order from row header
+  order <- case L.head csv of
+    Just hs -> pickHeaderOrder rhs hs
     Nothing -> Left "No header."
   -- NOTE: Finally, parse values
   let
-    vals = fromMaybe L.Nil $ L.tail csv
-  traverse parseValues vals
+    values = fromMaybe L.Nil $ L.tail csv
+  sortedValues <- sortColumns order values
+  traverse parseValues sortedValues
+  where
+  rhs = headerItems (Proxy :: Proxy { | r })
