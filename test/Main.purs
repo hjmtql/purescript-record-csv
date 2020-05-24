@@ -2,6 +2,7 @@ module Test.Main where
 
 import Prelude
 import Effect (Effect)
+import Test.Checker (checker)
 import Test.Order (order)
 import Test.OrderHelper (orderHelper)
 import Test.Quick (tour)
@@ -13,3 +14,4 @@ main = do
   sum
   order
   orderHelper
+  checker
