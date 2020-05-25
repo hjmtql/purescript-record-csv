@@ -1,5 +1,7 @@
 # purescript-record-csv
 
+[![Build Status](https://travis-ci.com/hjmtql/purescript-record-csv.svg?branch=master)](https://travis-ci.com/hjmtql/purescript-record-csv)
+
 Provides parse and print CSV functions for PureScript's record.
 
 ``` purescript
