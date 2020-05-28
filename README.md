@@ -40,4 +40,3 @@ printPersonWithOrder = printCSVWithOrder ord
 ## Parser Cautions
 
 - String value must require double quotations -> good to avoid troublesome (ex. Maybe String, escape)
-- CSV end with '\n' can not be parsed -> fixable

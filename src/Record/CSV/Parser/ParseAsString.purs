@@ -10,13 +10,13 @@ import Data.List as L
 import Data.String.CodeUnits (fromCharArray)
 import Text.Parsing.StringParser (ParseError, Parser, runParser)
 import Text.Parsing.StringParser.CodeUnits as CU
-import Text.Parsing.StringParser.Combinators (many, sepBy)
+import Text.Parsing.StringParser.Combinators (many, sepBy, sepEndBy)
 
 parseAsString :: String -> Either ParseError (L.List (L.List String))
 parseAsString = runParser csv
 
 csv :: Parser (L.List (L.List String))
-csv = sepBy line (CU.char '\n')
+csv = sepEndBy line (CU.char '\n')
 
 line :: Parser (L.List String)
 line = sepBy cell (CU.char ',')

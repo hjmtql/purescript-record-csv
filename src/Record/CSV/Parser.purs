@@ -25,7 +25,9 @@ parseCSV ::
 parseCSV s = do
   -- NOTE: First, parse csv as String
   csv <- lmap show $ parseAsString s
-  checkedCsv <- sameLength csv
+  let
+    filteredCsv = L.filter notEmptyLine csv
+  checkedCsv <- sameLength filteredCsv
   -- NOTE: Second, pick sort order from row header
   order <- case L.head checkedCsv of
     Just hs -> pickHeaderOrder rhs hs
@@ -37,3 +39,5 @@ parseCSV s = do
   traverse parseValues sortedValues
   where
   rhs = headerItems (Proxy :: Proxy { | r })
+
+  notEmptyLine = notEq (L.singleton "")
