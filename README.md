@@ -33,6 +33,7 @@ type Order
 ord :: SLProxy Order
 ord = SLProxy
 
+-- NOTE: it returns Either but checks column names type at compile time.
 printPersonWithOrder :: List Person -> Either String String
 printPersonWithOrder = printCSVWithOrder ord
 ```
