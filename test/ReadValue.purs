@@ -1,14 +1,12 @@
-module Test.Quick where
+module Test.ReadValue where
 
 import Prelude
 import Data.Either (Either(..))
 import Data.List as L
 import Data.Maybe (Maybe)
-import Effect (Effect)
 import Record.CSV.Parser (parseCSV)
 import Record.CSV.Printer (printCSV)
-import Test.Unit (suite, test)
-import Test.Unit.Main (runTest)
+import Test.Unit (TestSuite, suite, test)
 import Test.Unit.QuickCheck (quickCheck)
 
 type Sample
@@ -22,9 +20,8 @@ type Sample
     , maybeBoolean :: Maybe Boolean
     }
 
-tour :: Effect Unit
-tour =
-  runTest do
-    suite "basic type" do
-      test "quickcheck" do
-        quickCheck \(xs :: L.List Sample) -> Right xs == parseCSV (printCSV xs)
+readValue :: TestSuite
+readValue =
+  suite "read value" do
+    test "quickcheck" do
+      quickCheck \(xs :: L.List Sample) -> Right xs == parseCSV (printCSV xs)

@@ -12,9 +12,9 @@ import Prim.RowList as RL
 import Record.CSV.Error (CSVError(..), fromParseError)
 import Record.CSV.Header (class Header, headerItems)
 import Record.CSV.OrderHelper (pickHeaderOrder, sortColumns)
-import Record.CSV.Parser.Checker (sameLength)
 import Record.CSV.Parser.ParseAsString (parseAsString)
 import Record.CSV.Parser.ParseValues (class ParseValues, parseValues)
+import Record.CSV.Parser.ShapeChecker (sameLength)
 import Record.CSV.Type (CSVResult)
 import Type.Proxy (Proxy(..))
 

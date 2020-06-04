@@ -1,15 +1,13 @@
-module Test.Order where
+module Test.ColumnOrder where
 
 import Prelude
 import Data.Either (Either(..))
 import Data.List as L
-import Effect (Effect)
 import Record.CSV.Parser (parseCSV)
 import Record.CSV.Printer (printCSVWithOrder)
 import Record.CSV.Printer.SList (type (:), type (:|), SLProxy(..))
-import Test.Unit (suite, test)
+import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert as Assert
-import Test.Unit.Main (runTest)
 
 -- NOTE: RowList is automatically treated as alphabetical order
 type Person
@@ -39,11 +37,10 @@ xs' =
 "paul",20,false
 "john",40,true"""
 
-order :: Effect Unit
-order =
-  runTest do
-    suite "handle order" do
-      test "print" do
-        Assert.equal (Right xs') (printCSVWithOrder xs ord)
-      test "parse" do
-        Assert.equal (Right xs) (parseCSV xs')
+colunmOrder :: TestSuite
+colunmOrder =
+  suite "column order" do
+    test "print" do
+      Assert.equal (Right xs') (printCSVWithOrder xs ord)
+    test "parse" do
+      Assert.equal (Right xs) (parseCSV xs')

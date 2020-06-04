@@ -1,4 +1,4 @@
-module Record.CSV.Parser.Checker
+module Record.CSV.Parser.ShapeChecker
   ( sameLength
   ) where
 

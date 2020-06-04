@@ -1,19 +1,17 @@
-module Test.Sum where
+module Test.CustomType where
 
 import Prelude
 import Data.Either (Either(..))
 import Data.Generic.Rep (class Generic)
 import Data.Generic.Rep.Show (genericShow)
 import Data.List as L
-import Effect (Effect)
 import Record.CSV.Error (csvError)
 import Record.CSV.Parser (parseCSV)
 import Record.CSV.Parser.FromCSV (class FromCSV)
 import Record.CSV.Printer (printCSV)
 import Record.CSV.Printer.ToCSV (class ToCSV)
-import Test.Unit (suite, test)
+import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert as Assert
-import Test.Unit.Main (runTest)
 
 data Animal
   = Cat
@@ -53,11 +51,10 @@ xs =
 xs' :: String
 xs' = "kind,name\ncat,\"chiro\"\ndog,\"hachi\""
 
-sum :: Effect Unit
-sum =
-  runTest do
-    suite "sum type" do
-      test "print" do
-        Assert.equal (printCSV xs) xs'
-      test "parse" do
-        Assert.equal (parseCSV xs') (Right xs)
+sumType :: TestSuite
+sumType =
+  suite "custom type: sum" do
+    test "print" do
+      Assert.equal xs' (printCSV xs)
+    test "parse" do
+      Assert.equal (Right xs) (parseCSV xs')

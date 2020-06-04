@@ -2,16 +2,18 @@ module Test.Main where
 
 import Prelude
 import Effect (Effect)
-import Test.Checker (checker)
-import Test.Order (order)
+import Test.ColumnOrder (colunmOrder)
+import Test.CustomType (sumType)
 import Test.OrderHelper (orderHelper)
-import Test.Quick (tour)
-import Test.Sum (sum)
+import Test.ReadValue (readValue)
+import Test.ShapeChecker (shapeChecker)
+import Test.Unit.Main (runTest)
 
 main :: Effect Unit
-main = do
-  tour
-  sum
-  order
-  orderHelper
-  checker
+main =
+  runTest do
+    readValue
+    sumType
+    colunmOrder
+    orderHelper
+    shapeChecker
