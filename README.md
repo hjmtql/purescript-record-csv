@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.com/hjmtql/purescript-record-csv.svg?branch=master)](https://travis-ci.com/hjmtql/purescript-record-csv)
 
-Provides parse and print CSV functions for PureScript's record.
+CSV parser and printer for PureScript's record.
 
 ``` purescript
 type Person =
@@ -11,33 +11,48 @@ type Person =
     , married :: Boolean
     }
 
-parsePerson :: String -> Either String (List Person)
+parsePerson :: String -> CSVResult (List Person)
 parsePerson = parseCSV
 
 printPerson :: List Person -> String
 printPerson = printCSV
 ```
 
+## Parser Example
+
+String value must require double quotations.
+It is good to avoid troublesome (Maybe String, escape character).
+
+| Type         | Example                        |
+| ------------ | ------------------------------ |
+| String       | "hello","","Say \\"hi\\".",... |
+| Int          | 1,0,-1,...                     |
+| Number       | -1.2,1,1.2e3,...               |
+| Boolean      | true,false                     |
+| Maybe String | "hello",,...                   |
+
 ## Column Order 
 
-※ PureScript row type has no order, so it will automatically be treated as alphabetical order.
+※ PureScript row type has no order, so it will be automatically treated as alphabetical order.
 
-To specify the column order when you print, write code like below.
+To specify the column order when printing, write code like below.
 
 ``` purescript
 type Order
     = "name"
     : "age"
-    :| "married"
+    ! "married"
 
 ord :: SLProxy Order
 ord = SLProxy
 
--- NOTE: it returns Either but checks column names type at compile time.
-printPersonWithOrder :: List Person -> Either String String
+-- NOTE: it returns CSVResult but checks column names type at compile time.
+printPersonWithOrder :: List Person -> CSVResult String
 printPersonWithOrder = printCSVWithOrder ord
 ```
 
-## Parser Cautions
+## Custom Type
 
-- String value must require double quotations -> good to avoid troublesome (ex. Maybe String, escape)
+Define instances of [`FromCSV`](src/Record/CSV/Parser/FromCSV.purs) and [`ToCSV`](src/Record/CSV/Printer/ToCSV.purs) to use custom types.
+
+For example, sum type is as [test/CustomType.purs](test/CustomType.purs).
