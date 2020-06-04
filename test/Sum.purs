@@ -6,6 +6,7 @@ import Data.Generic.Rep (class Generic)
 import Data.Generic.Rep.Show (genericShow)
 import Data.List as L
 import Effect (Effect)
+import Record.CSV.Error (csvError)
 import Record.CSV.Parser (parseCSV)
 import Record.CSV.Parser.FromCSV (class FromCSV)
 import Record.CSV.Printer (printCSV)
@@ -28,7 +29,7 @@ instance fromCSVAnimal :: FromCSV Animal where
   fromCSV "cat" = Right Cat
   fromCSV "dog" = Right Dog
   fromCSV "bird" = Right Bird
-  fromCSV _ = Left "Faild to parse Animal."
+  fromCSV _ = Left $ csvError "Faild to parse Animal."
 
 derive instance eqAnimal :: Eq Animal
 

@@ -5,7 +5,6 @@ module Record.CSV.Printer
 
 import Prelude
 import Data.Array as A
-import Data.Either (Either)
 import Data.List as L
 import Data.String (joinWith)
 import Prim.RowList as RL
@@ -14,6 +13,7 @@ import Record.CSV.OrderHelper (pickHeaderOrder, sortColumns)
 import Record.CSV.Printer.HeaderConstraint (class HeaderConstraint)
 import Record.CSV.Printer.PrintValues (class PrintValues, printValues)
 import Record.CSV.Printer.SList (class ReflectSList, SLProxy(..), reflectSList)
+import Record.CSV.Type (CSVResult)
 import Type.Proxy (Proxy(..))
 
 printCSV ::
@@ -35,7 +35,7 @@ printCSVWithOrder ::
   Header rl =>
   ReflectSList sl =>
   HeaderConstraint sl r =>
-  L.List { | r } -> SLProxy sl -> Either String String
+  L.List { | r } -> SLProxy sl -> CSVResult String
 printCSVWithOrder r _ = do
   -- NOTE: it can pick all the row header by type constraint `HeaderConstraint`
   order <- pickHeaderOrder ohs hs

@@ -10,32 +10,34 @@ import Data.Int as I
 import Data.Maybe (Maybe(..), fromMaybe)
 import Data.Number as N
 import Data.String.CodeUnits (fromCharArray, toCharArray)
+import Record.CSV.Error (csvError)
+import Record.CSV.Type (CSVResult)
 
 class FromCSV a where
-  fromCSV :: String -> Either String a
+  fromCSV :: String -> CSVResult a
 
 -- NOTE: require double quotations for String
 instance fromCSVString :: FromCSV String where
   fromCSV s = case A.head cs, A.last cs of
     Just '"', Just '"' -> Right <<< fromCharArray <<< fromMaybe [] <<< (A.init <=< A.tail) $ cs
-    _, _ -> Left "Expected String value."
+    _, _ -> Left <<< csvError $ "Cound not read " <> s <> " as String."
     where
     cs = toCharArray s
 
 instance fromCSVInt :: FromCSV Int where
   fromCSV s = case I.fromString s of
     Just i -> Right i
-    Nothing -> Left "Expected Int value."
+    Nothing -> Left $ csvError $ "Cound not read " <> s <> " as Int."
 
 instance fromCSVNumber :: FromCSV Number where
   fromCSV s = case N.fromString s of
     Just n -> Right n
-    Nothing -> Left "Expected Number value."
+    Nothing -> Left $ csvError $ "Cound not read " <> s <> " as Number."
 
 instance fromCSVBoolean :: FromCSV Boolean where
   fromCSV "true" = Right true
   fromCSV "false" = Right false
-  fromCSV _ = Left "Expected Boolean value."
+  fromCSV s = Left $ csvError $ "Cound not read " <> s <> " as Boolean."
 
 instance fromCSVMaybe :: FromCSV a => FromCSV (Maybe a) where
   fromCSV "" = Right Nothing

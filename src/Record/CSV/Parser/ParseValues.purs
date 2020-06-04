@@ -11,15 +11,17 @@ import Data.Symbol (class IsSymbol, SProxy(..))
 import Prim.Row as R
 import Prim.RowList as RL
 import Record as Record
+import Record.CSV.Error (CSVError(..))
 import Record.CSV.Parser.FromCSV (class FromCSV, fromCSV)
+import Record.CSV.Type (CSVResult, CSVLine)
 import Type.Data.RowList (RLProxy(..))
 
 class ParseValues (rl :: RL.RowList) (r :: # Type) | rl -> r where
-  parseProxy :: RLProxy rl -> L.List String -> Either String { | r }
+  parseProxy :: RLProxy rl -> CSVLine -> CSVResult { | r }
 
 instance parseValuesNil :: ParseValues RL.Nil () where
   parseProxy _ L.Nil = Right {}
-  parseProxy _ (L.Cons x xs) = Left "Values are longer than record keys."
+  parseProxy _ (L.Cons x xs) = Left Unreachable
 
 instance parseValuesCons ::
   ( ParseValues rl tail
@@ -29,7 +31,7 @@ instance parseValuesCons ::
   , FromCSV a
   ) =>
   ParseValues (RL.Cons name a rl) row where
-  parseProxy _ L.Nil = Left "Values are shorter than record keys."
+  parseProxy _ L.Nil = Left Unreachable
   parseProxy _ (L.Cons x xs) = case fromCSV x of
     Right v -> Record.insert nameP v <$> parseProxy rlP xs
     Left e -> Left e
@@ -42,5 +44,5 @@ parseValues ::
   forall r rl.
   RL.RowToList r rl =>
   ParseValues rl r =>
-  L.List String -> Either String { | r }
+  CSVLine -> CSVResult { | r }
 parseValues = parseProxy (RLProxy :: RLProxy rl)

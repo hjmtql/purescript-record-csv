@@ -5,11 +5,12 @@ import Data.Either (Either(..))
 import Data.List as L
 import Effect (Effect)
 import Record.CSV.OrderHelper (pickHeaderOrder, sortColumns)
+import Record.CSV.Type (CSV, CSVLine)
 import Test.Unit (suite, test)
 import Test.Unit.Assert as Assert
 import Test.Unit.Main (runTest)
 
-header :: L.List String
+header :: CSVLine
 header =
   L.fromFoldable
     [ "name"
@@ -18,7 +19,7 @@ header =
     ]
 
 -- NOTE: alphabetical
-rowHeader :: L.List String
+rowHeader :: CSVLine
 rowHeader =
   L.fromFoldable
     [ "age"
@@ -26,14 +27,14 @@ rowHeader =
     , "married"
     ]
 
-values :: L.List (L.List String)
+values :: CSV
 values =
   fromFoldableNest
     [ [ "paul", "20", "false" ]
     , [ "john", "40", "true" ]
     ]
 
-rowSortedValues :: L.List (L.List String)
+rowSortedValues :: CSV
 rowSortedValues =
   fromFoldableNest
     [ [ "20", "paul", "false" ]

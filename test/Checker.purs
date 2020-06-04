@@ -5,11 +5,12 @@ import Data.Either (Either(..), isLeft)
 import Data.List as L
 import Effect (Effect)
 import Record.CSV.Parser.Checker (sameLength)
+import Record.CSV.Type (CSV)
 import Test.Unit (suite, test)
 import Test.Unit.Assert as Assert
 import Test.Unit.Main (runTest)
 
-validCSV :: (L.List (L.List String))
+validCSV :: CSV
 validCSV =
   fromFoldableNest
     [ [ "age", "name", "married" ]
@@ -17,7 +18,7 @@ validCSV =
     , [ "40", "john", "true" ]
     ]
 
-invalidCSV :: (L.List (L.List String))
+invalidCSV :: CSV
 invalidCSV =
   fromFoldableNest
     [ [ "age", "name", "married" ]

@@ -8,17 +8,18 @@ import Data.Array as A
 import Data.Either (Either)
 import Data.List as L
 import Data.String.CodeUnits (fromCharArray)
+import Record.CSV.Type (CSV, CSVLine)
 import Text.Parsing.StringParser (ParseError, Parser, runParser)
 import Text.Parsing.StringParser.CodeUnits as CU
 import Text.Parsing.StringParser.Combinators (many, sepBy, sepEndBy)
 
-parseAsString :: String -> Either ParseError (L.List (L.List String))
+parseAsString :: String -> Either ParseError CSV
 parseAsString = runParser csv
 
-csv :: Parser (L.List (L.List String))
+csv :: Parser CSV
 csv = sepEndBy line (CU.char '\n')
 
-line :: Parser (L.List String)
+line :: Parser CSVLine
 line = sepBy cell (CU.char ',')
 
 cell :: Parser String

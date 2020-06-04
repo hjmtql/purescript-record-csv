@@ -5,8 +5,10 @@ module Record.CSV.Parser.Checker
 import Prelude
 import Data.Either (Either(..))
 import Data.List as L
+import Record.CSV.Error (CSVError(..))
+import Record.CSV.Type (CSV, CSVResult)
 
-sameLength :: L.List (L.List String) -> Either String (L.List (L.List String))
+sameLength :: CSV -> CSVResult CSV
 sameLength L.Nil = Right L.Nil
 
 sameLength (L.Cons h tail) = L.Cons h <$> check tail
@@ -17,4 +19,4 @@ sameLength (L.Cons h tail) = L.Cons h <$> check tail
 
   check (L.Cons x xs)
     | L.length x == len = L.Cons <$> Right x <*> check xs
-    | otherwise = Left "Different column length."
+    | otherwise = Left $ DifferntColumnLength "Column lengths are not the same."
