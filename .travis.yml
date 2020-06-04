@@ -5,4 +5,4 @@ install:
   - npm install -g spago purescript
 script:
   - spago build
-  - spago test
+  - spago -x test.dhall test
