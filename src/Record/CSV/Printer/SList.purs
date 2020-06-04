@@ -4,7 +4,7 @@ module Record.CSV.Printer.SList
   , SCons
   , type (:)
   , LastSCons
-  , type (:|)
+  , type (!)
   , SLProxy(..)
   , class ReflectSList
   , reflectSList
@@ -25,7 +25,7 @@ infixr 6 type SCons as :
 type LastSCons s l
   = SCons s (SCons l SNil)
 
-infixr 6 type LastSCons as :|
+infixr 6 type LastSCons as !
 
 data SLProxy (sl :: SList)
   = SLProxy

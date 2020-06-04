@@ -5,7 +5,7 @@ import Data.Either (Either(..))
 import Data.List as L
 import Record.CSV.Parser (parseCSV)
 import Record.CSV.Printer (printCSVWithOrder)
-import Record.CSV.Printer.SList (type (:), type (:|), SLProxy(..))
+import Record.CSV.Printer.SList (type (:), type (!), SLProxy(..))
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert as Assert
 
@@ -19,7 +19,7 @@ type Person
 type Order
   = "name"
       : "age"
-      :| "married"
+      ! "married"
 
 ord :: SLProxy Order
 ord = SLProxy
