@@ -6,6 +6,7 @@ import Data.List as L
 import Data.Maybe (Maybe)
 import Record.CSV.Parser (parseCSV)
 import Record.CSV.Printer (printCSV)
+import Test.QuickCheck ((<?>))
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.QuickCheck (quickCheck)
 
@@ -24,4 +25,4 @@ readValue :: TestSuite
 readValue =
   suite "read value" do
     test "quickcheck" do
-      quickCheck \(xs :: L.List Sample) -> Right xs == parseCSV (printCSV xs)
+      quickCheck \(xs :: L.List Sample) -> Right xs == parseCSV (printCSV xs) <?> show xs

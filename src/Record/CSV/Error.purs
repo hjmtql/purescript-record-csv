@@ -5,8 +5,9 @@ module Record.CSV.Error
   ) where
 
 import Prelude
-import Text.Parsing.StringParser (ParseError)
+import Text.Parsing.Parser (ParseError)
 
+-- import Text.Parsing.StringParser (ParseError)
 data CSVError
   = NoLine String
   | ReadValueFailure String

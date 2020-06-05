@@ -1,10 +1,5 @@
 { name = "record-csv"
-, dependencies =
-  [ "numbers"
-  , "record"
-  , "string-parsers"
-  , "typelevel-prelude"
-  ]
+, dependencies = [ "free", "numbers", "parsing", "record", "typelevel-prelude" ]
 , packages = ./packages.dhall
 , sources = [ "src/**/*.purs" ]
 }
