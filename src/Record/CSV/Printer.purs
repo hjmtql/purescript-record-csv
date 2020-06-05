@@ -35,8 +35,8 @@ printCSVWithOrder ::
   Header rl =>
   ReflectSList sl =>
   HeaderConstraint sl r =>
-  L.List { | r } -> SLProxy sl -> CSVResult String
-printCSVWithOrder r _ = do
+  SLProxy sl -> L.List { | r } -> CSVResult String
+printCSVWithOrder _ r = do
   -- NOTE: it can pick all the row header by type constraint `HeaderConstraint`
   order <- pickHeaderOrder ohs hs
   orderdValues <- sortColumns order values
