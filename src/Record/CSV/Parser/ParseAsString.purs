@@ -43,53 +43,56 @@ quated = do
 special :: Parser Char
 special =
   CU.char '\\'
-    *> ( control
-          <|> escape
+    *> ( escape
+          <|> control
       )
 
 control :: Parser Char
 control =
-  to' "127" '\x7f'
-    <|> to' "14" '\x0e'
-    <|> to' "15" '\x0f'
-    <|> to' "16" '\x10'
-    <|> to' "17" '\x11'
-    <|> to' "18" '\x12'
-    <|> to' "19" '\x13'
-    <|> to' "20" '\x14'
-    <|> to' "21" '\x15'
-    <|> to' "22" '\x16'
-    <|> to' "23" '\x17'
-    <|> to' "24" '\x18'
-    <|> to' "25" '\x19'
-    <|> to' "26" '\x1a'
-    <|> to' "27" '\x1b'
-    <|> to' "28" '\x1c'
-    <|> to' "29" '\x1d'
-    <|> to' "30" '\x1e'
-    <|> to' "31" '\x1f'
-    <|> to '0' '\x00'
-    <|> to '1' '\x01'
-    <|> to '2' '\x02'
-    <|> to '3' '\x03'
-    <|> to '4' '\x04'
-    <|> to '5' '\x05'
-    <|> to '6' '\x06'
-    <|> to 'a' '\x07'
-    <|> to 'b' '\x08'
-    <|> to 't' '\x09'
-    <|> to 'n' '\x0a'
-    <|> to 'v' '\x0b'
-    <|> to 'f' '\x0c'
-    <|> to 'r' '\x0d'
+  CU.char '0' *> pure '\x00'
+    <|> ( CU.char '1'
+          *> ( CU.char '2' *> CU.char '7' *> pure '\x7f'
+                <|> (CU.char '4' *> pure '\x0e')
+                <|> (CU.char '5' *> pure '\x0f')
+                <|> (CU.char '6' *> pure '\x10')
+                <|> (CU.char '7' *> pure '\x11')
+                <|> (CU.char '8' *> pure '\x12')
+                <|> (CU.char '9' *> pure '\x13')
+                <|> (pure '\x01')
+            )
+      )
+    <|> ( CU.char '2'
+          *> ( CU.char '0' *> pure '\x14'
+                <|> (CU.char '1' *> pure '\x15')
+                <|> (CU.char '2' *> pure '\x16')
+                <|> (CU.char '3' *> pure '\x17')
+                <|> (CU.char '4' *> pure '\x18')
+                <|> (CU.char '5' *> pure '\x19')
+                <|> (CU.char '6' *> pure '\x1a')
+                <|> (CU.char '7' *> pure '\x1b')
+                <|> (CU.char '8' *> pure '\x1c')
+                <|> (CU.char '9' *> pure '\x1d')
+                <|> (pure '\x02')
+            )
+      )
+    <|> ( CU.char '3'
+          *> ( CU.char '0' *> pure '\x1e'
+                <|> (CU.char '1' *> pure '\x1f')
+                <|> (pure '\x03')
+            )
+      )
+    <|> (CU.char '4' *> pure '\x04')
+    <|> (CU.char '5' *> pure '\x05')
+    <|> (CU.char '6' *> pure '\x06')
+    <|> (CU.char 'a' *> pure '\x07')
+    <|> (CU.char 'b' *> pure '\x08')
+    <|> (CU.char 't' *> pure '\x09')
+    <|> (CU.char 'n' *> pure '\x0a')
+    <|> (CU.char 'v' *> pure '\x0b')
+    <|> (CU.char 'f' *> pure '\x0c')
+    <|> (CU.char 'r' *> pure '\x0d')
 
 escape :: Parser Char
 escape =
-  to '\\' '\x5c'
-    <|> to '"' '\x22'
-
-to :: Char -> Char -> Parser Char
-to f t = CU.char f *> pure t
-
-to' :: String -> Char -> Parser Char
-to' f t = CU.string f *> pure t
+  CU.char '\\' *> pure '\x5c'
+    <|> (CU.char '"' *> pure '\x22')
