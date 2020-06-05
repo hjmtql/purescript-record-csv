@@ -16,7 +16,7 @@ type Log
 xs :: L.List Log
 xs =
   L.fromFoldable
-    $ replicate 2_000
+    $ replicate 100_000
         { message: "warm"
         , temperature: 24.0
         }
