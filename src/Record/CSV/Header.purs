@@ -12,7 +12,7 @@ import Record.CSV.Type (CSVLine)
 import Type.Data.RowList (RLProxy(..))
 import Type.Proxy (Proxy)
 
-class Header (rl :: RL.RowList) where
+class Header (rl :: RL.RowList Type) where
   headerProxy :: RLProxy rl -> CSVLine
 
 instance headerNil :: Header RL.Nil where

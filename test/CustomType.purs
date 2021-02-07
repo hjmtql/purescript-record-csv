@@ -3,7 +3,7 @@ module Test.CustomType where
 import Prelude
 import Data.Either (Either(..))
 import Data.Generic.Rep (class Generic)
-import Data.Generic.Rep.Show (genericShow)
+import Data.Show.Generic (genericShow)
 import Data.List as L
 import Record.CSV.Error (csvError)
 import Record.CSV.Parser (parseCSV)
