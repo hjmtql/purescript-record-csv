@@ -41,6 +41,6 @@ colunmOrder :: TestSuite
 colunmOrder =
   suite "column order" do
     test "print" do
-      Assert.equal (Right xs') (printCSVWithOrder ord xs)
+      Assert.equal xs' (printCSVWithOrder ord xs)
     test "parse" do
       Assert.equal (Right xs) (parseCSV xs')
