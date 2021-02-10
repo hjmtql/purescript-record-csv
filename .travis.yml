@@ -2,7 +2,7 @@ language: node_js
 node_js:
   - node
 install:
-  - npm install -g spago purescript
+  - yarn
 script:
-  - spago build
-  - spago -x test.dhall test
+  - yarn build
+  - yarn test
