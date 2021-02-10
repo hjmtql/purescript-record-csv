@@ -11,6 +11,7 @@ import Data.Traversable (traverse)
 import Record.CSV.Error (CSVError(..))
 import Record.CSV.Type (CSVLine, CSVResult, CSV)
 
+-- NOTE: mapping row header (alphabetical) -> header
 pickHeaderOrder :: L.List String -> CSVLine -> CSVResult (L.List Int)
 pickHeaderOrder phs hs = go phs
   where

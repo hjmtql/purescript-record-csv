@@ -48,4 +48,8 @@ orderHelper =
     test "sortColumns" do
       Assert.equal (Right rowSortedValues) (sortColumns ord values)
   where
+  -- NOTE: mapping row header (alphabetical) -> header
+  -- 0 (age) -> 1
+  -- 1 (name) -> 0
+  -- 2 (married) -> 2   
   ord = L.fromFoldable [ 1, 0, 2 ]
