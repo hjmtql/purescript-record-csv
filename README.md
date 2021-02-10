@@ -46,8 +46,7 @@ type Order
 ord :: SLProxy Order
 ord = SLProxy
 
--- NOTE: it returns CSVResult but checks column names type at compile time.
-printPersonWithOrder :: List Person -> CSVResult String
+printPersonWithOrder :: List Person -> String
 printPersonWithOrder = printCSVWithOrder ord
 ```
 
