@@ -1,5 +1,5 @@
 module Record.CSV.Printer.SList
-  ( kind SList
+  ( SList
   , SNil
   , SCons
   , type (:)
@@ -14,7 +14,7 @@ import Prelude
 import Data.List as L
 import Data.Symbol (class IsSymbol, SProxy(..), reflectSymbol)
 
-foreign import kind SList
+data SList
 
 foreign import data SNil :: SList
 
