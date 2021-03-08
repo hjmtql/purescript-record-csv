@@ -8,7 +8,6 @@ import Data.Array as A
 import Data.Either (fromRight)
 import Data.List as L
 import Data.String (joinWith)
-import Partial.Unsafe (unsafePartial)
 import Prim.RowList as RL
 import Record.CSV.Header (class Header, headerItems)
 import Record.CSV.OrderHelper (pickHeaderOrder, sortColumns)
@@ -40,12 +39,11 @@ printCSVWithOrder ::
 printCSVWithOrder _ r = mkCol <<< map mkRow <<< L.Cons ohs $ orderedValues
   where
   -- NOTE: it can pick all the row header by type class constraint `HeaderConstraint`
-  -- NOTE: so use unsafePartial for convenience
+  -- NOTE: so use fromRight L.Nil for convenience
   orderedValues =
-    unsafePartial
-      $ fromRight do
-          order <- pickHeaderOrder ohs hs
-          sortColumns order values
+    fromRight L.Nil do
+      order <- pickHeaderOrder ohs hs
+      sortColumns order values
 
   hs = headerItems (Proxy :: Proxy { | r })
 

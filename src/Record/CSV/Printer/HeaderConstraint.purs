@@ -4,10 +4,10 @@ module Record.CSV.Printer.HeaderConstraint
   ) where
 
 import Prim.RowList as RL
-import Record.CSV.Printer.SList (SCons, SNil, kind SList)
+import Record.CSV.Printer.SList (SCons, SNil, SList)
 import Type.RowList (class ListToRow)
 
-class HeaderConstraint (sl :: SList) (r :: # Type) | sl -> r
+class HeaderConstraint (sl :: SList) (r :: Row Type) | sl -> r
 
 instance headerConstraint ::
   ( RL.RowToList r rl
@@ -16,7 +16,7 @@ instance headerConstraint ::
   ) =>
   HeaderConstraint sl r
 
-class SameNames (sl :: SList) (rl :: RL.RowList) | sl -> rl
+class SameNames (sl :: SList) (rl :: RL.RowList Type) | sl -> rl
 
 instance sameNamesNil :: SameNames SNil RL.Nil
 

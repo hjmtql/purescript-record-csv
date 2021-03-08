@@ -13,7 +13,7 @@ import Record as Record
 import Record.CSV.Printer.ToCSV (class ToCSV, toCSV)
 import Type.Data.RowList (RLProxy(..))
 
-class PrintValues (rl :: RL.RowList) (r :: # Type) | rl -> r where
+class PrintValues (rl :: RL.RowList Type) (r :: Row Type) | rl -> r where
   printProxy :: RLProxy rl -> { | r } -> L.List String
 
 instance printValuesNil :: PrintValues RL.Nil () where

@@ -16,7 +16,7 @@ import Record.CSV.Parser.FromCSV (class FromCSV, fromCSV)
 import Record.CSV.Type (CSVResult, CSVLine)
 import Type.Data.RowList (RLProxy(..))
 
-class ParseValues (rl :: RL.RowList) (r :: # Type) | rl -> r where
+class ParseValues (rl :: RL.RowList Type) (r :: Row Type) | rl -> r where
   parseProxy :: RLProxy rl -> CSVLine -> CSVResult { | r }
 
 instance parseValuesNil :: ParseValues RL.Nil () where
