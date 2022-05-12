@@ -12,7 +12,8 @@ module Record.CSV.Printer.SList
 
 import Prelude
 import Data.List as L
-import Data.Symbol (class IsSymbol, SProxy(..), reflectSymbol)
+import Data.Symbol (class IsSymbol, reflectSymbol)
+import Type.Proxy (Proxy(..))
 
 data SList
 
@@ -43,4 +44,4 @@ instance reflectSListCons ::
   ReflectSList (SCons s sl) where
   reflectSList _ = L.Cons name $ reflectSList (SLProxy :: SLProxy sl)
     where
-    name = reflectSymbol (SProxy :: SProxy s)
+    name = reflectSymbol (Proxy :: Proxy s)

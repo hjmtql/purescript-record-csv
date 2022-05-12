@@ -6,14 +6,13 @@ module Record.CSV.Header
 
 import Prelude
 import Data.List as L
-import Data.Symbol (class IsSymbol, SProxy(..), reflectSymbol)
+import Data.Symbol (class IsSymbol, reflectSymbol)
 import Prim.RowList as RL
 import Record.CSV.Type (CSVLine)
-import Type.Data.RowList (RLProxy(..))
-import Type.Proxy (Proxy)
+import Type.Proxy (Proxy(..))
 
 class Header (rl :: RL.RowList Type) where
-  headerProxy :: RLProxy rl -> CSVLine
+  headerProxy :: Proxy rl -> CSVLine
 
 instance headerNil :: Header RL.Nil where
   headerProxy _ = L.Nil
@@ -25,9 +24,9 @@ instance headerCons ::
   Header (RL.Cons name t rl) where
   headerProxy _ = L.Cons key $ headerProxy rlP
     where
-    rlP = RLProxy :: RLProxy rl
+    rlP = Proxy :: Proxy rl
 
-    nameP = SProxy :: SProxy name
+    nameP = Proxy :: Proxy name
 
     key = reflectSymbol nameP
 
@@ -36,4 +35,4 @@ headerItems ::
   RL.RowToList r rl =>
   Header rl =>
   Proxy { | r } -> CSVLine
-headerItems _ = headerProxy (RLProxy :: RLProxy rl)
+headerItems _ = headerProxy (Proxy :: Proxy rl)

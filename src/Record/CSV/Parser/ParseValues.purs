@@ -7,21 +7,21 @@ module Record.CSV.Parser.ParseValues
 import Prelude
 import Data.Either (Either(..))
 import Data.List as L
-import Data.Symbol (class IsSymbol, SProxy(..))
+import Data.Symbol (class IsSymbol)
 import Prim.Row as R
 import Prim.RowList as RL
 import Record as Record
 import Record.CSV.Error (CSVError(..))
 import Record.CSV.Parser.FromCSV (class FromCSV, fromCSV)
 import Record.CSV.Type (CSVResult, CSVLine)
-import Type.Data.RowList (RLProxy(..))
+import Type.Proxy (Proxy(..))
 
 class ParseValues (rl :: RL.RowList Type) (r :: Row Type) | rl -> r where
-  parseProxy :: RLProxy rl -> CSVLine -> CSVResult { | r }
+  parseProxy :: Proxy rl -> CSVLine -> CSVResult { | r }
 
 instance parseValuesNil :: ParseValues RL.Nil () where
   parseProxy _ L.Nil = Right {}
-  parseProxy _ (L.Cons x xs) = Left Unreachable
+  parseProxy _ (L.Cons _ _) = Left Unreachable
 
 instance parseValuesCons ::
   ( ParseValues rl tail
@@ -36,13 +36,13 @@ instance parseValuesCons ::
     Right v -> Record.insert nameP v <$> parseProxy rlP xs
     Left e -> Left e
     where
-    rlP = RLProxy :: RLProxy rl
+    rlP = Proxy :: Proxy rl
 
-    nameP = SProxy :: SProxy name
+    nameP = Proxy :: Proxy name
 
 parseValues ::
   forall r rl.
   RL.RowToList r rl =>
   ParseValues rl r =>
   CSVLine -> CSVResult { | r }
-parseValues = parseProxy (RLProxy :: RLProxy rl)
+parseValues = parseProxy (Proxy :: Proxy rl)

@@ -9,10 +9,11 @@ import Data.Array as A
 import Data.Either (Either)
 import Data.List as L
 import Data.String.CodeUnits (fromCharArray)
+import Parsing (ParseError, ParserT, runParserT)
+import Parsing.Combinators (sepBy, sepEndBy)
+import Parsing.String (char)
+import Parsing.String.Basic (noneOf)
 import Record.CSV.Type (CSV, CSVLine)
-import Text.Parsing.Parser (ParseError, ParserT, runParserT)
-import Text.Parsing.Parser.Combinators (sepBy, sepEndBy)
-import Text.Parsing.Parser.String (char, noneOf)
 
 type StringParserT
   = ParserT String
