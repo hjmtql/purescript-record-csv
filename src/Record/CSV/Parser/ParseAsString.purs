@@ -1,60 +1,55 @@
 module Record.CSV.Parser.ParseAsString
-  ( parseAsString
+  ( line
+  , parseAsString
   ) where
 
 import Prelude
 import Control.Alt ((<|>))
-import Control.Monad.Trampoline (runTrampoline)
 import Data.Array as A
 import Data.Either (Either)
 import Data.List as L
 import Data.String.CodeUnits (fromCharArray)
-import Parsing (ParseError, ParserT, runParserT)
-import Parsing.Combinators (sepBy, sepEndBy)
-import Parsing.String (char)
-import Parsing.String.Basic (noneOf)
 import Record.CSV.Type (CSV, CSVLine)
+import StringParser (Parser)
+import StringParser.CodeUnits (char, noneOf)
+import StringParser.Combinators (many, sepBy)
+import StringParser.Parser (ParseError, runParser)
 
-type StringParserT
-  = ParserT String
-
--- NOTE: use trampoline to avoid stack overflow
--- https://github.com/purescript-contrib/purescript-parsing/issues/34
 parseAsString :: String -> Either ParseError CSV
-parseAsString s = runTrampoline $ runParserT s csv
+parseAsString = runParser csv
 
-csv :: forall m. Monad m => StringParserT m CSV
-csv = sepEndBy line (char '\n')
+csv :: Parser CSV
+csv = sepBy line (char '\n')
 
-line :: forall m. Monad m => StringParserT m CSVLine
+line :: Parser CSVLine
 line = sepBy cell (char ',')
 
-cell :: forall m. Monad m => StringParserT m String
+cell :: Parser String
 cell =
   fromCharArray
     <<< A.fromFoldable
     <$> (quated <|> direct)
 
-direct :: forall m. Monad m => StringParserT m (L.List Char)
-direct = L.many (noneOf [ ',', '\n' ])
+direct :: Parser (L.List Char)
+direct = many (noneOf [ ',', '\n' ])
 
 -- NOTE: take double quotations to handle Maybe String
-quated :: forall m. Monad m => StringParserT m (L.List Char)
+quated :: Parser (L.List Char)
 quated = do
   open <- char '"'
-  inner <- L.many (special <|> noneOf [ '"' ])
+  inner <- many (special <|> noneOf [ '"' ])
   close <- char '"'
-  pure $ L.singleton open <> inner <> L.singleton close
+  pure $ pure open <> inner <> pure close
 
 -- REVIEW
-special :: forall m. Monad m => StringParserT m Char
+special :: Parser Char
 special =
   char '\\'
     *> ( escape
           <|> control
       )
 
-control :: forall m. Monad m => StringParserT m Char
+control :: Parser Char
 control =
   char '0' *> pure '\x00'
     <|> ( char '1'
@@ -99,7 +94,7 @@ control =
     <|> (char 'f' *> pure '\x0c')
     <|> (char 'r' *> pure '\x0d')
 
-escape :: forall m. Monad m => StringParserT m Char
+escape :: Parser Char
 escape =
   char '\\' *> pure '\x5c'
     <|> (char '"' *> pure '\x22')

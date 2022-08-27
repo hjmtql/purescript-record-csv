@@ -5,7 +5,7 @@ module Record.CSV.Error
   ) where
 
 import Prelude
-import Parsing (ParseError)
+import StringParser.Parser (ParseError)
 
 -- import Text.Parsing.StringParser (ParseError)
 data CSVError
